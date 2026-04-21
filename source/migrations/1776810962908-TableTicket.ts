@@ -1,6 +1,6 @@
 import { MigrationInterface, QueryRunner } from "typeorm";
 
-export class TableTicket1776811110822 implements MigrationInterface {
+export class TableTicket1776810962908 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> 
     {
@@ -13,10 +13,10 @@ export class TableTicket1776811110822 implements MigrationInterface {
                 TICKET_PRIORITY INTEGER REFERENCES "TYPEPRIORITY"(TYPEPRI_ID),
                 TICKET_DESCRIPTION TEXT NOT NULL,
                 TICKET_CATEGORY INTEGER REFERENCES "TICKETCATEGORY"(TICKCAT_ID),
-                TICKET_DATEOPEN DATETIME NOT NULL,
-                TICKET_DATECLOSE DATETIME,
-                TICKET_SOLICITANT ID REFERENCES "USUARIO"(USUAR_ID),
-                TICKET_AGENT ID REFERENCES "USUARIO"(USUAR_ID),
+                TICKET_DATEOPEN TIMESTAMP NOT NULL,
+                TICKET_DATECLOSE TIMESTAMP,
+                TICKET_SOLICITANT INTEGER REFERENCES "USUARIO"(USUAR_ID),
+                TICKET_AGENT INTEGER REFERENCES "USUARIO"(USUAR_ID)
             )
             
         `)
