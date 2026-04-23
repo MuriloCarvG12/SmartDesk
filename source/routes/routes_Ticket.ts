@@ -6,10 +6,10 @@ const ConstTicketController= new TicketController()
 
 const TicketRouter = Router();
 
-TicketRouter.get('/Departamento', ConstTicketController.GetAll);
-TicketRouter.get('/Departamento/:id', ConstTicketController.GetById);
-TicketRouter.post('/Departamento', ConstTicketController.post);
-TicketRouter.put('/Departamento/:id', ConstTicketController.update);
-TicketRouter.delete('/Departamento/:id', ConstTicketController.delete);
+TicketRouter.get('/Ticket', ConstTicketController.GetAll);
+TicketRouter.get('/Ticket/:id', ConstTicketController.GetById);
+TicketRouter.post('/Ticket', ConstTicketController.post);
+TicketRouter.put('/Ticket/:id', ConstTicketController.update);
+TicketRouter.delete('/Ticket/:id', ConstTicketController.delete);
 
 export default TicketRouter;
