@@ -6,7 +6,7 @@ import { TipoUsuario } from './entity_TipoUsuario';
 @Entity('USUARIO')
 export class Usuario {
   @PrimaryGeneratedColumn({ name: 'USUAR_ID' })
-  usuarId!: number;
+  Id!: number;
  
   @Column({ name: 'USUAR_NOME', type: 'varchar', length: 100, nullable: true })
   usuarNome!: string;

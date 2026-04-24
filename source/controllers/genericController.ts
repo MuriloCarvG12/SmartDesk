@@ -1,5 +1,4 @@
 import { ObjectLiteral, Repository } from "typeorm";
-import { AppDataSource } from "../data-source";
 import { Request , Response } from "express";
 
 export class GenericController<T extends ObjectLiteral> {
@@ -9,7 +8,7 @@ export class GenericController<T extends ObjectLiteral> {
   {
         try 
         {
-            return this.repository.find;
+            return res.status(200).json(await this.repository.find());
         } 
 
         catch (error) 
@@ -20,9 +19,15 @@ export class GenericController<T extends ObjectLiteral> {
 
   GetById = async(req:Request, res:Response) =>
   {
+        console.log(req.params.id)
         try 
         {   
-            return this.repository.findBy( req.body.id  as any);
+            
+            return res.status(200).json(await this.repository.find({
+            where: {
+                Id:req.params.id  as any
+            }
+            }))
         } 
 
         catch (error) 
@@ -31,20 +36,20 @@ export class GenericController<T extends ObjectLiteral> {
         }
   }
 
-  post = async (data: Partial<T>) => {
-  {
-        try 
-        {   
-            const entity = this.repository.create();
-            return this.repository.save(entity);
-        } 
-
-        catch (error) 
+        post = async (req: Request, res:Response) => {
         {
-            return error
+                try 
+                {   
+                    const entity = this.repository.create();
+                    return res.status(200).json(await this.repository.save(entity));
+                } 
+
+                catch (error) 
+                {
+                    return error
+                }
         }
-  }
-}
+        }
 
  update = async (req: Request, res: Response) => {
   try {
@@ -55,16 +60,16 @@ export class GenericController<T extends ObjectLiteral> {
     const result = await this.repository.findOneBy({ id } as any);
 
     if (!result) return res.status(404).json({ message: 'Not found' });
-    res.json(result);
+    return res.status(200).json(result);
   } catch (error) {
     res.status(500).json({ message: 'Internal server error', error });
   }
 };
 
-delete = async (req: Request) => {
+delete = async (req: Request, res: Response) => {
     try 
     {
-      await this.repository.delete(req.body.id as any);
+      await res.status(200).json(this.repository.delete(req.body.id as any))
       return `Register with id ${req.body.id} has been deleted!`;
     } 
 
