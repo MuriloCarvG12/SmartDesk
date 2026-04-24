@@ -5,7 +5,7 @@ import { Usuario } from './entity_Usuario';
 @Entity('TICKETCOMMENT')
 export class TicketComment {
   @PrimaryGeneratedColumn({ name: 'TICKCOM_ID' })
-  tickcomId!: number;
+  Id!: number;
  
   @Column({ name: 'TICKCOM_COMMENT', type: 'text', nullable: false })
   tickcomComment!: string;

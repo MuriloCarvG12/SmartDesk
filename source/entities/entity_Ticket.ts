@@ -7,7 +7,7 @@ import { Usuario } from './entity_Usuario';
 @Entity('TICKET')
 export class Ticket {
   @PrimaryGeneratedColumn({ name: 'TICKET_ID' })
-  ticketId!: number;
+  Id!: number;
  
   @Column({ name: 'TICKET_TITLE', type: 'text', nullable: false })
   ticketTitle!: string;

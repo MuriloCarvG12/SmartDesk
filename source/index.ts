@@ -11,8 +11,12 @@ import TicketStatusRouter from "./routes/routes_TicketStatus";
 import TipoUsuarioRouter from "./routes/routes_TipoUsuario";
 import TypePriorityRouter from "./routes/routes_TypePriority";
 import UserRouter from "./routes/routes_Usuario";
+import cors from "cors";
 
 const app = express();
+
+app.use(cors());
+
 app.use(express.json());
 
 app.use("/Cargo", CargoRouter);
@@ -24,6 +28,7 @@ app.use("/TicketStatus", TicketStatusRouter)
 app.use("/TipoUsuario", TipoUsuarioRouter);
 app.use("/TypePriority", TypePriorityRouter)
 app.use("/Usuario", UserRouter)
+
 
 AppDataSource.initialize()
   .then(() => {

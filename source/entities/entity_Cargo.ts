@@ -4,7 +4,7 @@ import { Departamento } from './entity_Departamento';
 @Entity('CARGO')
 export class Cargo {
   @PrimaryGeneratedColumn({ name: 'CAR_ID' })
-  carId!: number;
+  Id!: number;
  
   @Column({ name: 'CAR_NOME', type: 'varchar', length: 50, nullable: false })
   carNome!: string;
