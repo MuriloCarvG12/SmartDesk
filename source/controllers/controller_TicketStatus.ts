@@ -54,7 +54,7 @@ export class TicketStatusController extends GenericController<TicketStatus> {
       } 
       catch (error) 
       {
-        
+        return res.status(401).json(error)
       }
     }
 

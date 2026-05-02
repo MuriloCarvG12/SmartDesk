@@ -57,7 +57,7 @@ export class DepartamentoController extends GenericController<Departamento> {
       } 
       catch (error) 
       {
-        
+        return res.status(401).json(error)
       }
     }
  

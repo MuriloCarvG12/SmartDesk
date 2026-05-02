@@ -20,32 +20,39 @@ export class TipoUsuarioController extends GenericController<TipoUsuario> {
 
   post = async (req: Request, res: Response) => 
     {
-
-      if(req.body.tipusuDescricao.trim() == "" || typeof req.body.tipusuDescricao != "string")
+      try 
+      {
+        if(req.body.tipusuDescricao.trim() == "" || typeof req.body.tipusuDescricao != "string")
         {
            return res.status(400).json({ error: ConstTypeUser.TYPE_USER_DESCRIPTION});
         }
 
 
-      const TipoUserTemplate =
-      { 
-        tipusuDescricao: ""
-      }
-
-      const nullables = [''];
-
-      const TipoUserObject = generateDTO<TipoUserDto>(TipoUserTemplate, req, nullables);
-
-      if(typeof TipoUserObject == "string")
-        {
-          return res.status(400).json({ error: ConstTypeUser.TYPE_USER_BADBODY});
+        const TipoUserTemplate =
+        { 
+          tipusuDescricao: ""
         }
 
-      const NewTipoUser = await this.TipoUsuarioRepository.create(TipoUserObject); 
+        const nullables = [''];
 
-      await this.TipoUsuarioRepository.save(NewTipoUser);
+        const TipoUserObject = generateDTO<TipoUserDto>(TipoUserTemplate, req, nullables);
 
-      return res.status(200).json(NewTipoUser);
+        if(typeof TipoUserObject == "string")
+          {
+            return res.status(400).json({ error: ConstTypeUser.TYPE_USER_BADBODY});
+          }
+
+        const NewTipoUser = await this.TipoUsuarioRepository.create(TipoUserObject); 
+
+        await this.TipoUsuarioRepository.save(NewTipoUser);
+
+        return res.status(200).json(NewTipoUser);
+      } 
+      catch (error) 
+      {
+        return res.status(401).json(error)
+      }
+      
 
     }
 

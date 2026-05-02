@@ -97,7 +97,7 @@ export class UsuarioController extends GenericController<Usuario> {
       } 
       catch (error) 
       {
-        return error
+        return res.status(401).json(error)
       }
   }
  

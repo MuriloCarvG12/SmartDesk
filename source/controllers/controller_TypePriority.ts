@@ -49,7 +49,7 @@ export class TypePriorityController extends GenericController<TypePriority> {
     } 
     catch (error) 
     {
-        return error
+        return res.status(401).json(error)
     }
       
   }

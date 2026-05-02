@@ -27,59 +27,66 @@ export class TicketCommentController extends GenericController<TicketComment> {
 
   post = async (req: Request, res: Response) =>
   {
-    if(req.body.tickcomComment.trim() == "" || typeof req.body.tickcomComment != "string")
+    try 
+    {
+      if(req.body.tickcomComment.trim() == "" || typeof req.body.tickcomComment != "string")
       {
         return res.status(400).json({ error: ConstTicketComment.BODY_REQUIRED});
       }
 
-    if(req.body.tickcomTicket == null || typeof req.body.tickcomTicket != "number")
+      if(req.body.tickcomTicket == null || typeof req.body.tickcomTicket != "number")
+        {
+          return res.status(400).json({ error: ConstTicketComment.BODY_REQUIRED});
+        }
+
+      if(req.body.tickcomUser == null || typeof req.body.tickcomUser != "string")
+        {
+          return res.status(400).json({ error: ConstTicketComment.BODY_REQUIRED});
+        }
+
+      const TemplateTicket = 
       {
-        return res.status(400).json({ error: ConstTicketComment.BODY_REQUIRED});
+        tickcomComment: '',
+        tickcomTicket: 0,
+        tickcomUser: 0
       }
 
-    if(req.body.tickcomUser == null || typeof req.body.tickcomUser != "string")
+      const nullables = [''];
+      
+      const TicketCommentObject = generateDTO<TicketCommentDTO>(TemplateTicket, req, nullables);
+
+      if(typeof TicketCommentObject == "string")
+        {
+          return res.status(400).json({ error: ConstTicketComment.TICKETCOMMENT_INVALIDINFO});
+        }
+
+      if(!this.UserRepository.findOne({where :{Id : TicketCommentObject.tickcomUser}}))
       {
-        return res.status(400).json({ error: ConstTicketComment.BODY_REQUIRED});
+        return res.status(400).json({ error: ConstTicketComment.TICKETCOMMENT_INVALIDUSER});
       }
 
-    const TemplateTicket = 
-    {
-      tickcomComment: '',
-      tickcomTicket: 0,
-      tickcomUser: 0
-    }
-
-    const nullables = [''];
-    
-    const TicketCommentObject = generateDTO<TicketCommentDTO>(TemplateTicket, req, nullables);
-
-    if(typeof TicketCommentObject == "string")
+      if(!this.TicketRepository.findOne({where :{Id : TicketCommentObject.tickcomTicket}}))
       {
-        return res.status(400).json({ error: ConstTicketComment.TICKETCOMMENT_INVALIDINFO});
+        return res.status(400).json({ error: ConstTicketComment.TICKETCOMMENT_INVALIDTICKET});
       }
 
-    if(!this.UserRepository.findOne({where :{Id : TicketCommentObject.tickcomUser}}))
+      const TicketData = 
+      {
+        tickcomComment: '',
+        tickcomTicket: {Id: TemplateTicket.tickcomTicket},
+        tickcomUser: {Id: TemplateTicket.tickcomUser}
+      }
+      
+      const NewTicketComment = this.TicketCommentRepository.create(TicketData)
+
+      await this.TicketCommentRepository.save(NewTicketComment);
+
+      return res.status(200).json(NewTicketComment)
+    } 
+    catch (error) 
     {
-      return res.status(400).json({ error: ConstTicketComment.TICKETCOMMENT_INVALIDUSER});
+      return res.status(401).json(error)
     }
-
-    if(!this.TicketRepository.findOne({where :{Id : TicketCommentObject.tickcomTicket}}))
-    {
-      return res.status(400).json({ error: ConstTicketComment.TICKETCOMMENT_INVALIDTICKET});
-    }
-
-    const TicketData = 
-    {
-      tickcomComment: '',
-      tickcomTicket: {Id: TemplateTicket.tickcomTicket},
-      tickcomUser: {Id: TemplateTicket.tickcomUser}
-    }
-    
-    const NewTicketComment = this.TicketCommentRepository.create(TicketData)
-
-    await this.TicketCommentRepository.save(NewTicketComment);
-
-    return res.status(200).json(NewTicketComment)
 
   }
 

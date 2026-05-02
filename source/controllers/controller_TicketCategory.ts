@@ -52,9 +52,9 @@ export class TicketCategoryController extends GenericController<TicketCategory> 
           
         return res.status(200).json(NewTicket)
       }
-      catch
+      catch(error)
       {
-
+        return res.status(401).json(error)
       }
     }
 
