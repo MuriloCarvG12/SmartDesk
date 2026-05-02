@@ -20,29 +20,37 @@ export class TypePriorityController extends GenericController<TypePriority> {
 
   Post = async (req:Request, res:Response) => 
   {
-      if(req.body.typepriDescription.trim() == "" || typeof req.body.typepriDescription != "string")
+    try 
+    {
+        if(req.body.typepriDescription.trim() == "" || typeof req.body.typepriDescription != "string")
         {
             return res.status(400).json({ error: ConstTypePriority.TYPE_PRIORITY_DESCRIPTION});
         }
 
-      const TypePriorityTemplate = 
-      {
-        typepriDescription: ""
-      }
-
-      const nullables = [''];
-
-      const NewTypePriority = generateDTO<TypePriorityDTO>(TypePriorityTemplate, req, nullables);
-
-      if(typeof NewTypePriority == "string")
+        const TypePriorityTemplate = 
         {
-          return res.status(400).json({ error: ConstTypePriority.TYPE_PRIORITY_BADBODY}); 
+          typepriDescription: ""
         }
-      
-      const NewTypePriorityObject = await this.TypePriority.create(NewTypePriority)
-      
-      await this.TypePriority.save(NewTypePriorityObject)
 
-      return res.status(200).json(NewTypePriorityObject)
+        const nullables = [''];
+
+        const NewTypePriority = generateDTO<TypePriorityDTO>(TypePriorityTemplate, req, nullables);
+
+        if(typeof NewTypePriority == "string")
+          {
+            return res.status(400).json({ error: ConstTypePriority.TYPE_PRIORITY_BADBODY}); 
+          }
+        
+        const NewTypePriorityObject = await this.TypePriority.create(NewTypePriority)
+        
+        await this.TypePriority.save(NewTypePriorityObject)
+
+        return res.status(200).json(NewTypePriorityObject)
+    } 
+    catch (error) 
+    {
+        return error
+    }
+      
   }
 }

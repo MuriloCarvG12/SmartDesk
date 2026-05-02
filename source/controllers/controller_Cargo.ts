@@ -3,6 +3,7 @@ import { generateDTO } from '../auxFunctions/generateObjectDto';
 import ConstCargo from '../consts/Cargo';
 import { AppDataSource } from '../data-source';
 import { Cargo } from '../entities/entity_Cargo';
+import { Departamento } from '../entities/entity_Departamento';
 import { GenericController } from './genericController';
 import { Request , Response } from "express";
 
@@ -16,6 +17,8 @@ interface cargoDto
 export class CargoController extends GenericController<Cargo> {
 
   private CargoRepository = AppDataSource.getRepository(Cargo);
+  private DepartamentoRepository = AppDataSource.getRepository(Departamento)
+
   constructor() {
     super(AppDataSource.getRepository(Cargo));
   }
@@ -46,6 +49,11 @@ export class CargoController extends GenericController<Cargo> {
           if(typeof CargoObject == "string")
             {
               return res.status(400).json({ error: ConstCargo.BODY_REQUIRED});
+            }
+
+          if(!await this.DepartamentoRepository.findOne({where : {Id : CargoObject.departamento}}))
+            {
+              return res.status(400).json({ error : ConstCargo.DEPARTAMENT_DOESNT_EXIST})
             }
 
           const NewCargoObject = {

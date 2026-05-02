@@ -82,14 +82,14 @@ export class UsuarioController extends GenericController<Usuario> {
         }
 
 
-          const entityData = {
-            ...UserObject,
+        const entityData = {
+          ...UserObject,
 
-            usuarCargo: { Id: UserObject.usuarCargo },
-            usuarDepartamento: { Id: UserObject.usuarDepartamento },
-            usuarTipoUsuario: { Id: UserObject.usuarTipoUsuario },
-          };
-          const NewUser =  this.UserRepository.create(entityData) 
+          usuarCargo: { Id: UserObject.usuarCargo },
+          usuarDepartamento: { Id: UserObject.usuarDepartamento },
+          usuarTipoUsuario: { Id: UserObject.usuarTipoUsuario },
+        };
+        const NewUser =  this.UserRepository.create(entityData) 
 
         await this.UserRepository.save(NewUser)
 
